@@ -1,0 +1,37 @@
+# Daily USDA LRP data update for the live Cattle Hedge website.
+# Runs in the public website repo (lmoroney24/cattlehedge) every morning,
+# downloads the latest LRP prices from USDA RMA, and saves them if anything
+# changed. Uses GitHub's built-in short-lived token, so no saved keys.
+name: Daily USDA LRP update
+
+on:
+  schedule:
+    - cron: "0 12 * * *"   # every day, 7-8am Eastern
+  workflow_dispatch:        # "Run workflow" button for a manual update
+
+permissions:
+  contents: write
+
+concurrency: lrp-update
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download the latest USDA LRP data
+        run: python3 -u tools/fetch_lrp.py --daily
+
+      - name: Save it if anything changed
+        run: |
+          if git diff --quiet -- data/lrp-data.js; then
+            echo "No new USDA data today."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/lrp-data.js
+          git commit -m "Daily USDA LRP data update"
+          git push
