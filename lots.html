@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cattle Hedge · My lots</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Oswald.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css?v=1b27058">
+</head>
+<body>
+
+<header class="hero hero-sm">
+  <nav class="site-nav">
+    <a class="brand" href="index.html" aria-label="Cattle Hedge home"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M28 17c-3-3-6-4-9-4-6 0-9 6-9 13s3 13 9 13c3 0 6-1 9-4"/><path d="M36 14v25M52 14v25M36 26.5h16"/><path d="M9 48q23 12 46 0"/></g></svg><span>Cattle Hedge</span></a>
+    <a href="index.html">Home</a>
+    <a href="lots.html" aria-current="page">My lots</a>
+    <a href="breakeven.html">Breakeven</a>
+    <a href="lrp.html">LRP tool</a>
+    <a href="analysis.html">Coverage analysis</a>
+    <a href="coverage.html">My coverage</a>
+    <a href="learn.html">LRP overview</a>
+  </nav>
+  <div class="wrap">
+    <h1>Cattle Hedge</h1>
+    <p class="tagline">Price protection for the cattle producers the enterprise brokerages won’t call back</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <p class="intro">
+    Start here. Describe each group of cattle you plan to sell once, and every other page uses it.
+  </p>
+
+  <!-- 1. Add or edit a lot -->
+  <section class="card" id="lot-entry">
+    <h2><span class="step">1</span> <span id="form-title">Add a lot</span></h2>
+    <form id="lot-form" class="grid-form" autocomplete="off">
+      <label>Lot name
+        <input id="f-name" type="text" maxlength="40" placeholder="e.g. Fall steers">
+        <small class="field-error" id="f-name-err" hidden></small>
+      </label>
+      <label>Cattle
+        <select id="f-class">
+          <optgroup label="Feeder cattle (under 600 lbs or 600–1,000 lbs)">
+            <option value="steers">Feeder steers</option>
+            <option value="heifers">Feeder heifers</option>
+          </optgroup>
+          <optgroup label="Fat cattle (1,000–1,800 lbs)">
+            <option value="fat">Fat cattle (fed steers &amp; heifers)</option>
+          </optgroup>
+        </select>
+      </label>
+      <label>Number of head
+        <input id="f-head" type="number" min="1" max="6000" step="1" placeholder="e.g. 40">
+        <small class="field-error" id="f-head-err" hidden></small>
+      </label>
+      <label>Starting weight (lbs per head)
+        <input id="f-start" type="number" min="1" step="10" placeholder="e.g. 550">
+        <small>At purchase, or at weaning if you raised them.</small>
+        <small class="field-error" id="f-start-err" hidden></small>
+      </label>
+      <label>Sale weight (lbs per head)
+        <input id="f-weight" type="number" min="100" max="1000" step="10" placeholder="e.g. 800">
+        <small class="field-error" id="f-weight-err" hidden></small>
+      </label>
+      <label>Purchase price ($ per head)
+        <input id="f-price" type="number" min="0" step="1" placeholder="Leave blank if you raised them">
+        <small id="f-price-cwt" hidden></small>
+      </label>
+      <label>Purchase date
+        <input id="f-start-date" type="date">
+      </label>
+      <label>Average daily gain (lbs per day)
+        <input id="f-adg" type="number" min="0.1" max="10" step="0.05" placeholder="e.g. 2.5">
+        <small class="field-error" id="f-adg-err" hidden></small>
+      </label>
+    </form>
+
+    <div id="sale-calc" class="sale-calc"></div>
+    <div id="sale-override" class="lot-pick" hidden>
+      <label>Sale date
+        <input id="f-date" type="date">
+      </label>
+      <button type="button" class="btn btn-small btn-quiet" id="use-calc">Use the calculated date</button>
+    </div>
+
+    <label class="check">
+      <input id="f-keep" type="checkbox">
+      Keeping these as replacements (not selling). LRP never covers breeding stock.
+    </label>
+    <div class="form-actions">
+      <button type="button" class="btn" id="f-submit">Add lot</button>
+      <button type="button" class="btn btn-quiet" id="f-cancel" hidden>Cancel</button>
+      <span class="field-error" id="f-submit-err" hidden>Fix the fields marked in red, then save.</span>
+    </div>
+  </section>
+
+  <!-- 2. The lots -->
+  <section class="card" id="lot-list">
+    <h2><span class="step">2</span> Your lots</h2>
+    <div id="summary-headline" class="headline"></div>
+    <div id="summary-tiles" class="stat-row"></div>
+    <div id="protect-bar" class="protect-bar" hidden>
+      <div class="bar-track"><div class="bar-fill" id="protect-fill"></div></div>
+      <div class="legend">
+        <span class="box" style="--c:var(--series-lrp)">Has a price floor</span>
+        <span class="box" style="--c:var(--line)">No price floor</span>
+      </div>
+    </div>
+    <div id="empty-state" class="empty" hidden>
+      <p>No lots yet. Add your first lot above, or load an example farm to see how it works.</p>
+      <button type="button" class="btn" id="load-example">Load example farm</button>
+    </div>
+    <div class="table-scroll" id="lots-wrap">
+      <table id="lots-table">
+        <thead>
+          <tr><th>Lot</th><th>Head</th><th>Weight</th><th>Sale date</th><th>Breakeven</th><th>Value today</th><th>Coverage</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="lot-warnings"></div>
+    <p class="fine" id="storage-note">
+      Your lots are saved in this browser only. They don't leave this device and nobody else can see them,
+      but they'll disappear if you clear your browser data.
+    </p>
+  </section>
+
+</main>
+
+<footer class="wrap footer">
+  Cattle Hedge &middot; FinTech @ Rocky Top, Fall 2026 &middot; Educational decision support, not investment advice.<br>
+  Header photo: cattle grazing in Fillmore County, Minnesota. Public domain, via Wikimedia Commons.
+</footer>
+
+<script src="data/lrp-data.js"></script>
+<script src="calc.js?v=1b27058"></script>
+<script src="lots.js?v=1b27058"></script>
+<script src="mylots.js?v=1b27058"></script>
+<script src="reveal.js?v=1b27058"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cattle Hedge · LRP overview</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Oswald.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css?v=1b27058">
+</head>
+<body>
+
+<header class="hero hero-sm">
+  <nav class="site-nav">
+    <a class="brand" href="index.html" aria-label="Cattle Hedge home"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M28 17c-3-3-6-4-9-4-6 0-9 6-9 13s3 13 9 13c3 0 6-1 9-4"/><path d="M36 14v25M52 14v25M36 26.5h16"/><path d="M9 48q23 12 46 0"/></g></svg><span>Cattle Hedge</span></a>
+    <a href="index.html">Home</a>
+    <a href="lots.html">My lots</a>
+    <a href="breakeven.html">Breakeven</a>
+    <a href="lrp.html">LRP tool</a>
+    <a href="analysis.html">Coverage analysis</a>
+    <a href="coverage.html">My coverage</a>
+    <a href="learn.html" aria-current="page">LRP overview</a>
+  </nav>
+  <div class="wrap">
+    <h1>Cattle Hedge</h1>
+    <p class="tagline">Price protection for the cattle producers the enterprise brokerages won’t call back</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1. How LRP pays -->
+  <section class="card" id="how-it-pays">
+    <h2><span class="step">1</span> How LRP pays</h2>
+    <p>
+      LRP pays on one national price at the end of your coverage: the <strong>CME Feeder Cattle Index</strong>
+      for feeder cattle, or <strong>USDA's 5-Area weekly fed cattle price</strong> for fat cattle. What your cattle actually
+      sell for doesn't change the payout. <em>Example:</em> a lot of 18 steers at 550 lbs is 99 cwt
+      insured (1 cwt = 100 lbs), with a $308/cwt floor:
+    </p>
+    <div class="table-scroll">
+      <table class="example-table">
+        <thead><tr><th>Index ends at ($/cwt)</th><th>LRP pays ($)</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>$300/cwt</td><td>$792</td><td>($308 − $300 per cwt) × 99 cwt</td></tr>
+          <tr><td>$295/cwt</td><td>$1,287</td><td>($308 − $295 per cwt) × 99 cwt</td></tr>
+          <tr><td>$310/cwt</td><td>$0</td><td>Index above the floor, even if your local sale was only $300/cwt</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">That last row is <strong>basis risk</strong>: your sale barn and the national index don't always move together.</p>
+  </section>
+
+  <!-- 2. After coverage ends -->
+  <section class="card" id="after-sale">
+    <h2><span class="step">2</span> After your LRP expires</h2>
+    <p class="standout">You don't have to sell when coverage ends.</p>
+    <ul class="check-list">
+      <li><strong>Feeder cattle: sell them or keep them.</strong> You can keep growing them after coverage ends. LRP pays
+        on the index on the end date either way, as long as you owned the cattle during the last 60 days of coverage.</li>
+      <li><strong>Fat cattle: plan to sell them.</strong> They're already finished, so unlike feeder cattle you can't keep
+        growing them into a heavier class. Holding them longer just adds feed cost.</li>
+    </ul>
+
+    <h3>Keep proof you owned them</h3>
+    <p>If LRP pays, the insurance company can ask you to prove you owned the cattle during the last 60 days.
+      Records that usually work:</p>
+    <ul class="doc-list">
+      <li>Sale barn settlement sheets or sale receipts</li>
+      <li>Bills of sale or purchase receipts</li>
+      <li>Brand inspection certificates (in states that brand-inspect)</li>
+      <li>Vet, vaccination, or health records in your name</li>
+      <li>Ear tag or RFID records</li>
+      <li>Feedlot or custom-feeding invoices, for cattle on feed</li>
+    </ul>
+    <p class="fine">Ask your agent which records they accept.</p>
+
+    <h3>Set up ownership with your agent before you buy</h3>
+    <p>The name on your LRP application has to match who owns the cattle: you, your spouse, a partnership, or an LLC.
+      If someone else owns a share, that has to be listed too. <strong>Don't lose a payment because the application
+      wasn't filled out right or ownership records are missing.</strong></p>
+
+    <h3>If the index ended below your floor</h3>
+    <p>File a claim (a Notice of Probable Loss) with your agent within 60 days after coverage ends. The insurance
+      company usually pays within about 30 days.</p>
+
+    <h3>The premium isn't due until the end</h3>
+    <p>You don't pay for LRP when you buy it. The premium is billed after coverage ends, so that money stays in your
+      account, or off your operating loan, the whole time. <em>Example:</em> a $1,700 premium billed 21 weeks after you
+      buy, at an 8% operating-loan rate, is about $55 of interest you don't pay.</p>
+    <p class="fine">Confirm claim deadlines, ownership rules, and billing with your agent. Rules can change each year.</p>
+  </section>
+
+</main>
+
+<footer class="wrap footer">
+  Cattle Hedge &middot; FinTech @ Rocky Top, Fall 2026 &middot; Educational decision support, not investment advice.<br>
+  Header photo: cattle grazing in Fillmore County, Minnesota. Public domain, via Wikimedia Commons.
+</footer>
+
+<script src="reveal.js?v=1b27058"></script>
+</body>
+</html>
