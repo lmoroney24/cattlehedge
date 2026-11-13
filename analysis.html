@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cattle Hedge · Analysis of different coverages</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Oswald.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css?v=b4b06ea">
+</head>
+<body>
+
+<header class="hero">
+  <nav class="site-nav">
+    <a class="brand" href="index.html" aria-label="Cattle Hedge home"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M28 17c-3-3-6-4-9-4-6 0-9 6-9 13s3 13 9 13c3 0 6-1 9-4"/><path d="M36 14v25M52 14v25M36 26.5h16"/><path d="M9 48q23 12 46 0"/></g></svg><span>Cattle Hedge</span></a>
+    <a href="index.html">Home</a>
+    <a href="lots.html">My lots</a>
+    <a href="breakeven.html">Breakeven</a>
+    <a href="analysis.html" aria-current="page">Coverage analysis</a>
+    <a href="lrp.html">LRP tool</a>
+    <a href="coverage.html">My coverage</a>
+    <a href="learn.html">LRP overview</a>
+  </nav>
+  <div class="wrap">
+    <h1>Cattle Hedge</h1>
+    <p class="tagline">Price protection for the cattle producers the enterprise brokerages won’t call back</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <p class="intro">
+    Analysis of different coverages: which LRP plan fits you best, based on how much risk you want to take on.
+  </p>
+
+  <!-- 1. The lot -->
+  <section class="card" id="profile">
+    <h2><span class="step">1</span> Your lot</h2>
+    <div id="has-lots">
+      <form id="herd-form" class="lot-pick" autocomplete="off">
+        <label>Lot
+          <select id="lot-select"></select>
+        </label>
+        <div class="be-show">
+          <span class="be-label">Breakeven cost ($ per cwt)</span>
+          <strong id="breakeven-text"></strong>
+          <input id="breakeven" type="hidden">
+          <small id="breakeven-help"></small>
+        </div>
+        <div class="be-show sale-show">
+          <span class="be-label">Sale date</span>
+          <strong id="sale-text"></strong>
+          <small><a id="sale-edit" href="lots.html">Change on My lots →</a></small>
+        </div>
+      </form>
+      <p id="lot-summary" class="lot-summary"></p>
+      <p id="profile-note" class="note warn" hidden></p>
+    </div>
+    <div id="no-lots" class="empty" hidden>
+      <p>Add a lot first. You describe your cattle once on My lots, and this page uses it.</p>
+      <a class="btn" href="lots.html">Add a lot</a>
+    </div>
+  </section>
+
+  <!-- 2. Risk tolerance + recommendation -->
+  <section class="card" id="tolerance">
+    <h2><span class="step">2</span> How much risk do you want to take on?</h2>
+    <div id="market-view" class="market-view"></div>
+    <p class="note">Pick what you want. Each card shows what that choice costs and what it does if prices fall or rise.</p>
+    <div class="budget-row">
+      <label for="budget">Most I can spend on coverage <span class="fine">($ per head, optional)</span></label>
+      <input id="budget" type="number" min="0" step="1" placeholder="No limit">
+    </div>
+    <div class="profiles" role="radiogroup" aria-label="What you want">
+      <div class="profile profile-none">
+        <div class="profile-head"><strong>No coverage</strong><small>For comparison</small></div>
+        <div class="profile-body" id="pc-none"></div>
+      </div>
+      <label class="profile">
+        <span class="profile-head"><input type="radio" name="tolerance" value="opportunity">
+          <strong>More opportunity</strong><small>Pay the least, keep the most if prices rise</small></span>
+        <span class="profile-body" id="pc-opportunity"></span>
+      </label>
+      <label class="profile">
+        <span class="profile-head"><input type="radio" name="tolerance" value="cheapest" checked>
+          <strong>A mix</strong><small>Cheapest plan that protects your breakeven</small></span>
+        <span class="profile-body" id="pc-cheapest"></span>
+      </label>
+      <label class="profile">
+        <span class="profile-head"><input type="radio" name="tolerance" value="max">
+          <strong>More security</strong><small>The highest price floor, at a higher cost</small></span>
+        <span class="profile-body" id="pc-max"></span>
+      </label>
+    </div>
+    <div id="recommendation" class="recommendation"></div>
+    <figure class="chart-box">
+      <figcaption>Protection vs. cost: every coverage level</figcaption>
+      <p class="fine">Higher and further left is better: more protection for less money. Click a dot to try that plan.</p>
+      <div class="chart" id="tradeoff-chart"></div>
+    </figure>
+    <div id="breakdown" class="breakdown">
+      <h3>Breakdown</h3>
+      <div id="breakdown-text"></div>
+      <p class="fine">Written from the numbers on this page only. It is not a price prediction.</p>
+    </div>
+  </section>
+
+  <!-- 3. What if prices move? -->
+  <section class="card" id="simulator">
+    <h2><span class="step">3</span> What if prices move?</h2>
+    <div class="unit-toggle" role="group" aria-label="Show money as">
+      <span>Show money as</span>
+      <button type="button" data-unit="total" aria-pressed="true">Total</button>
+      <button type="button" data-unit="head" aria-pressed="false">$/head</button>
+      <button type="button" data-unit="cwt" aria-pressed="false">$/cwt</button>
+    </div>
+    <div class="level-picker">
+      <span class="picker-label">Coverage level</span>
+      <button type="button" class="btn btn-small btn-quiet" id="level-prev" aria-label="Lower coverage">‹</button>
+      <div id="level-chips" class="level-chips" role="group" aria-label="Coverage levels"></div>
+      <button type="button" class="btn btn-small btn-quiet" id="level-next" aria-label="Higher coverage">›</button>
+    </div>
+    <label class="slider-label" for="move">
+      Cattle prices by your sale date: <strong id="move-label"></strong>
+    </label>
+    <input id="move" type="range" min="-25" max="25" step="1" value="-25">
+    <div class="slider-scale"><span>-25%</span><span>no change</span><span>+25%</span></div>
+    <div id="sim-tiles" class="stat-row"></div>
+    <figure class="chart-box">
+      <figcaption>What LRP changes vs. no coverage, for each change in cattle price</figcaption>
+      <div class="legend" id="sim-legend"></div>
+      <div class="chart" id="sim-chart"></div>
+      <p class="sim-pick" id="sim-pick"></p>
+    </figure>
+    <div class="table-scroll">
+      <table id="scenario-table">
+        <caption id="scenario-caption"></caption>
+        <thead>
+          <tr><th>Plan</th><th>Sale money ($)</th><th>LRP payout ($)</th><th>LRP cost ($)</th><th>Profit vs. breakeven ($)</th><th>vs. no coverage ($)</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Buy the plan (demo): adds it to My coverage -->
+  <div id="lot-banner" class="lot-banner" hidden></div>
+
+</main>
+
+<footer class="wrap footer">
+  Cattle Hedge &middot; FinTech @ Rocky Top, Fall 2026 &middot; Build 1<br>
+  Header photo: cattle grazing in Fillmore County, Minnesota. Public domain, via Wikimedia Commons.
+</footer>
+
+<div id="tooltip" class="tooltip" hidden></div>
+
+<script src="data/lrp-data.js"></script>
+<script src="calc.js?v=b4b06ea"></script>
+<script src="lots.js?v=b4b06ea"></script>
+<script src="charts.js?v=b4b06ea"></script>
+<script src="app.js?v=b4b06ea"></script>
+<script src="reveal.js?v=b4b06ea"></script>
+</body>
+</html>

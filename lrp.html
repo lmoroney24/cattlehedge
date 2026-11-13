@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cattle Hedge · LRP tool</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Oswald.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css?v=b4b06ea">
+</head>
+<body>
+
+<header class="hero">
+  <nav class="site-nav">
+    <a class="brand" href="index.html" aria-label="Cattle Hedge home"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M28 17c-3-3-6-4-9-4-6 0-9 6-9 13s3 13 9 13c3 0 6-1 9-4"/><path d="M36 14v25M52 14v25M36 26.5h16"/><path d="M9 48q23 12 46 0"/></g></svg><span>Cattle Hedge</span></a>
+    <a href="index.html">Home</a>
+    <a href="lots.html">My lots</a>
+    <a href="breakeven.html">Breakeven</a>
+    <a href="analysis.html">Coverage analysis</a>
+    <a href="lrp.html" aria-current="page">LRP tool</a>
+    <a href="coverage.html">My coverage</a>
+    <a href="learn.html">LRP overview</a>
+  </nav>
+  <div class="wrap">
+    <h1>Cattle Hedge</h1>
+    <p class="tagline">Price protection for the cattle producers the enterprise brokerages won’t call back</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1. The lot -->
+  <section class="card" id="profile">
+    <h2><span class="step">1</span> Your lot</h2>
+    <div id="has-lots">
+      <form id="herd-form" class="lot-pick" autocomplete="off">
+        <label>Lot
+          <select id="lot-select"></select>
+        </label>
+        <div class="be-show">
+          <span class="be-label">Breakeven cost ($ per cwt)</span>
+          <strong id="breakeven-text"></strong>
+          <input id="breakeven" type="hidden">
+          <small id="breakeven-help"></small>
+        </div>
+        <div class="be-show sale-show">
+          <span class="be-label">Sale date</span>
+          <strong id="sale-text"></strong>
+          <small><a id="sale-edit" href="lots.html">Change on My lots →</a></small>
+        </div>
+      </form>
+      <p id="lot-summary" class="lot-summary"></p>
+      <p id="profile-note" class="note warn" hidden></p>
+    </div>
+    <div id="no-lots" class="empty" hidden>
+      <p>Add a lot first. You describe your cattle once on My lots, and this page uses it.</p>
+      <a class="btn" href="lots.html">Add a lot</a>
+    </div>
+  </section>
+
+  <!-- 2. Market data -->
+  <section class="card" id="market">
+    <h2><span class="step">2</span> The market today</h2>
+    <div class="unit-toggle" role="group" aria-label="Show money as">
+      <span>Show money as</span>
+      <button type="button" data-unit="total" aria-pressed="true">Total</button>
+      <button type="button" data-unit="head" aria-pressed="false">$/head</button>
+      <button type="button" data-unit="cwt" aria-pressed="false">$/cwt</button>
+    </div>
+    <div id="market-summary" class="stat-row"></div>
+    <p id="length-explain" class="note"></p>
+    <div class="table-scroll">
+      <table id="levels-table">
+        <thead>
+          <tr>
+            <th>Coverage level</th>
+            <th>Coverage price ($/cwt)</th>
+            <th>Net floor ($/cwt)</th>
+            <th>Gross cost/cwt</th>
+            <th>USDA subsidy/cwt</th>
+            <th>Net cost/cwt</th>
+            <th>Net cost/head</th>
+            <th>Total net cost</th>
+            <th>Covers breakeven?</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="form-actions">
+      <a class="btn" href="analysis.html" id="to-analysis">Find the plan that fits you →</a>
+    </div>
+    <p class="source" id="data-source"></p>
+  </section>
+
+  <!-- Buy the plan (demo): adds it to My coverage -->
+  <div id="lot-banner" class="lot-banner" hidden></div>
+
+  <!-- 5. Limitations -->
+  <section class="card limits" id="limits">
+    <h2>Know the limits</h2>
+    <ul>
+      <li>LRP pays on a national price, not your local sale barn's.</li>
+      <li>Prices change every day.</li>
+      <li>Educational tool, not investment advice. Buy LRP through a licensed agent.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="wrap footer">
+  Cattle Hedge &middot; FinTech @ Rocky Top, Fall 2026 &middot; Build 1<br>
+  Header photo: cattle grazing in Fillmore County, Minnesota. Public domain, via Wikimedia Commons.
+</footer>
+
+<div id="tooltip" class="tooltip" hidden></div>
+
+<script src="data/lrp-data.js"></script>
+<script src="calc.js?v=b4b06ea"></script>
+<script src="lots.js?v=b4b06ea"></script>
+<script src="charts.js?v=b4b06ea"></script>
+<script src="app.js?v=b4b06ea"></script>
+<script src="reveal.js?v=b4b06ea"></script>
+</body>
+</html>
